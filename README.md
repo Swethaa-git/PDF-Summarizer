@@ -1,4 +1,4 @@
-# 📄 AI-Powered Multi-PDF Summarizer and Chatbot
+# 📄 AI-Powered Multi-PDF Summarizer
 
 This project is a smart web application that allows users to upload multiple PDF documents and get concise summaries using AI. It also features a chatbot interface that can answer questions based on the content inside those PDFs.
 
