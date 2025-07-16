@@ -13,7 +13,6 @@ The app is built using Python with Streamlit for the interface, and uses LangCha
 - You can chat with the PDFs and ask questions to get answers from the document content.
 - The app includes a basic login and signup system using SQLite.
 - It stores your documents in chunks and makes them searchable using FAISS.
-- It has a neat and responsive interface styled with HTML and CSS.
 
 ---
 
