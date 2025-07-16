@@ -1,0 +1,91 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ask-MultiPDF</title>
+    <style>
+        body {
+            background-color: #1e1e1e;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            background-color: #008080;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .chat-container {
+            padding: 20px;
+        }
+        .chat-box {
+            background: #333;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        .bot { background: #555; }
+        .input-box {
+            margin-top: 20px;
+        }
+        input, button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #008080;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div>Welcome, {{ username }}</div>
+        <div><a href="/logout" style="color:white;">Logout</a></div>
+    </div>
+
+    <div class="chat-container">
+        <h2>📚 Chat with Your PDFs</h2>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" name="pdfs" multiple required>
+            <button type="submit">📥 Process PDFs</button>
+        </form>
+
+        <div class="input-box">
+            <input type="text" id="question" placeholder="Ask something..." style="width: 70%;">
+            <button onclick="sendQuestion()">Ask</button>
+        </div>
+
+        <div id="chatLog"></div>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const res = await fetch('/process', { method: 'POST', body: formData });
+            const data = await res.json();
+            alert(data.message);
+        };
+
+        async function sendQuestion() {
+            const question = document.getElementById('question').value;
+            const res = await fetch('/ask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question })
+            });
+            const data = await res.json();
+            document.getElementById('chatLog').innerHTML = '';
+            data.forEach(msg => {
+                const div = document.createElement('div');
+                div.className = 'chat-box ' + (msg.sender === 'bot' ? 'bot' : '');
+                div.innerText = msg.content;
+                document.getElementById('chatLog').appendChild(div);
+            });
+        }
+    </script>
+</body>
+</html>
